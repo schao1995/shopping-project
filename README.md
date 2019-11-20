@@ -1,2 +1,2 @@
-# shopping-project
-电商小项目
+# mine-project
+个人小项目
