@@ -8,7 +8,7 @@ export default new Router({
     {
       path: '/',
       name: 'login',
-      component: resolve => require(['@/components/login/login.vue'],resolve)
+      component: resolve => require(['@/components/login/login.vue'], resolve)
     }
   ]
 })

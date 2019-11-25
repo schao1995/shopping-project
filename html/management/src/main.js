@@ -7,6 +7,12 @@ import router from './router'
 // 引入全局css样式
 import './assets/css/public.css'
 
+// 全局引入element-ui
+import ElementUi from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+
+Vue.use(ElementUi)
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
