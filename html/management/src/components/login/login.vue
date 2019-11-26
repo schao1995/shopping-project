@@ -22,9 +22,6 @@ export default {
       if (value === '') {
         callback(new Error('请输入用户名'))
       } else {
-        if (this.formLogin.loginName !== '') {
-          this.$refs.ruleForm.validateField('loginName')
-        }
         callback()
       }
     }
@@ -32,9 +29,6 @@ export default {
       if (value === '') {
         callback(new Error('请输入密码'))
       } else {
-        if (this.formLogin.loginPass !== '') {
-          this.$refs.ruleForm.validateField('loginPass')
-        }
         callback()
       }
     }
@@ -58,7 +52,7 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          this.$router.push({ path: '/public' })
         } else {
           console.log('error submit!!')
           return false
