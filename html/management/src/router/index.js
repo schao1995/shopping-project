@@ -11,26 +11,40 @@ export default new Router({
       component: resolve => require(['@/components/login/login.vue'], resolve)
     }, {
       path: '/public',
-      redirect: '/public/content/admin-manage',
+      redirect: '/public/content/word-book',
       name: 'public',
       component: resolve => require(['@/components/public.vue'], resolve),
       children: [
         {
           path: 'content',
-          name: 'public',
           components: {
             default: resolve => require(['@/components/content-model/content-model.vue'], resolve),
-            'nav-bar': resolve => require(['@/components/nav-bar/nav-bar.vue'], resolve),
-            'bread-crumb': resolve => require(['@/components/bread-crumb/bread-crumb.vue'], resolve)
+            'nav-bar': resolve => require(['@/components/nav-bar/nav-bar.vue'], resolve)
           },
           children: [
             {
-              path: 'admin-manage',
-              name: 'admin-manage',
-              component: resolve => require(['@/components/admin-manage/admin-manage.vue'], resolve),
+              path: 'word-book',
+              name: 'word-book',
+              component: resolve => require(['@/components/word-book/word-book.vue'], resolve),
               meta: {
                 menuShow: true,
-                menuName: 'manage用户'
+                menuName: '单词本'
+              }
+            }, {
+              path: 'essay',
+              name: 'essay',
+              component: resolve => require(['@/components/essay/essay.vue'], resolve),
+              meta: {
+                menuShow: true,
+                menuName: '文章'
+              }
+            }, {
+              path: 'painting',
+              name: 'painting',
+              component: resolve => require(['@/components/painting/painting.vue'], resolve),
+              meta: {
+                menuShow: true,
+                menuName: '画'
               }
             }, {
               path: 'user-manage',
@@ -38,7 +52,15 @@ export default new Router({
               component: resolve => require(['@/components/user-manage/user-manage.vue'], resolve),
               meta: {
                 menuShow: true,
-                menuName: 'user用户'
+                menuName: '用户管理'
+              }
+            }, {
+              path: 'log',
+              name: 'log',
+              component: resolve => require(['@/components/log/log.vue'], resolve),
+              meta: {
+                menuShow: true,
+                menuName: '日志'
               }
             }
           ]

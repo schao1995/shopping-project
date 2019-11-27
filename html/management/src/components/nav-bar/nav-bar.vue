@@ -1,66 +1,66 @@
 <template>
-  <el-row class="tac">
-    <el-col>
-      <h5>自定义颜色</h5>
-      <el-menu
-        default-active="2"
-        class="el-menu-vertical-demo"
-        @open="handleOpen"
-        @close="handleClose"
-        background-color="#14ddd6"
-        text-color="#fff"
-        active-text-color="#ffd04b">
-        <el-submenu index="1">
-          <template slot="title">
-            <i class="el-icon-location"></i>
-            <span>导航一</span>
-          </template>
-          <el-menu-item-group>
-            <template slot="title">分组一</template>
-            <el-menu-item index="1-1">选项1</el-menu-item>
-            <el-menu-item index="1-2">选项2</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="分组2">
-            <el-menu-item index="1-3">选项3</el-menu-item>
-          </el-menu-item-group>
-          <el-submenu index="1-4">
-            <template slot="title">选项4</template>
-            <el-menu-item index="1-4-1">选项1</el-menu-item>
-          </el-submenu>
-        </el-submenu>
-        <el-menu-item index="2">
-          <i class="el-icon-menu"></i>
-          <span slot="title">导航二</span>
-        </el-menu-item>
-        <el-menu-item index="3">
-          <i class="el-icon-document"></i>
-          <span slot="title">导航三</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <i class="el-icon-setting"></i>
-          <span slot="title">导航四</span>
-        </el-menu-item>
-      </el-menu>
-    </el-col>
-  </el-row>
+  <div class="nav-bar">
+    <el-menu
+      :default-active="activeIndex"
+      class="el-menu-demo"
+      mode="horizontal"
+      @select="handleSelect"
+      background-color="#14ddd6"
+      text-color="#fff"
+      active-text-color="#ffd04b">
+      <el-menu-item index="0">单词本</el-menu-item>
+      <el-menu-item index="1">文章</el-menu-item>
+      <el-menu-item index="2">画</el-menu-item>
+      <el-menu-item index="3">个人中心</el-menu-item>
+      <el-menu-item index="4">日志</el-menu-item>
+    </el-menu>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'navBar',
+  data () {
+    return {
+      activeIndex: '0',
+      urlSrc: ['word-book', 'essay', 'painting', 'user-manage', 'log'],
+      pathUrl: '/public/content/'
+    }
+  },
+  mounted () {
+    let url = window.location.href
+    this.activeIndex = '4'
+    for (var i = 0; i < this.urlSrc.length; i++) {
+      if (url.indexOf(this.urlSrc[i]) === -1) {
+        continue
+      } else if (url.indexOf(this.urlSrc[i]) >= 0) {
+        this.activeIndex = i.toString()
+      }
+    }
+  },
   methods: {
-    handleOpen (key, keyPath) {
+    handleSelect (key, keyPath) {
       console.log(key, keyPath)
-    },
-    handleClose (key, keyPath) {
-      console.log(key, keyPath)
+      let url = window.location.href
+      if (url.indexOf(this.urlSrc[key]) === -1) {
+        this.$router.push({ path: (this.pathUrl + this.urlSrc[key]) })
+      } else {
+        console.log('当前页面')
+      }
     }
   }
 }
 </script>
 
 <style scoped>
+  /*.nav-bar {
+    back
+  }*/
   .el-menu{
+    width: 1100px;
+    margin: auto;
+  }
+  .el-menu.el-menu--horizontal {
     border: 0;
   }
 </style>

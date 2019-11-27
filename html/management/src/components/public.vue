@@ -1,7 +1,6 @@
 <template>
   <div class="public">
     <router-view name="nav-bar" class="nav-bar"/>
-    <router-view name="bread-crumb" class="bread-crumb"/>
     <router-view class="content-model"/>
   </div>
 </template>
@@ -14,37 +13,19 @@ export default {
 
 <style scoped>
   .public {
-    width: 100%;
-    height: 100%;
-    position: relative;
   }
   .nav-bar {
-    width: 200px;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 99;
-    background-color: #14ddd6;
-  }
-  .bread-crumb {
-    box-sizing: border-box;
     width: 100%;
     height: 60px;
-    position: absolute;
-    padding-left: 200px;
-    top: 0;
+    background-color: #14ddd6;
+    position: fixed;
     left: 0;
-    z-index: 10;
+    top: 0;
   }
   .content-model {
-    box-sizing: border-box;
     width: 100%;
-    height: 100%;
-    position: absolute;
-    padding-left: 200px;
+    min-height: 500px;
     padding-top: 60px;
-    top: 0;
-    left: 0;
+    background-color: #f9f9f9;
   }
 </style>
