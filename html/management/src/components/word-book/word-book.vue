@@ -20,13 +20,55 @@
         </ul>
       </div>
     </div>
+    <div class="edit-word">
+      <el-button size="medium" type="primary" @click="dialogFormVisible = true">编辑</el-button>
+    </div>
+    <el-dialog title="编辑单词本" :visible.sync="dialogFormVisible">
+      <el-tabs v-model="activeName" type="card" @tab-click="dialogFormVisible = true">
+        <el-tab-pane label="添加" name="first">
+          <el-form :model="form">
+            <el-form-item label="新增单词" :label-width="formLabelWidth">
+              <el-input v-model="form.name" autocomplete="off"></el-input>
+            </el-form-item>
+          </el-form>
+          <el-button size="medium" @click="dialogFormVisible = false">取 消</el-button>
+          <el-button size="medium" type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        </el-tab-pane>
+        <el-tab-pane label="修改" name="second">
+          <el-form :model="form">
+            <el-form-item label="修改单词" :label-width="formLabelWidth">
+              <el-input v-model="form.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="修改结果" :label-width="formLabelWidth">
+              <el-input v-model="form.name" autocomplete="off"></el-input>
+            </el-form-item>
+          </el-form>
+          <el-button size="medium" @click="dialogFormVisible = false">取 消</el-button>
+          <el-button size="medium" type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        </el-tab-pane>
+        <el-tab-pane label="删除" name="third">
+          <el-form :model="form">
+            <el-form-item label="删除单词" :label-width="formLabelWidth">
+              <el-input v-model="form.name" autocomplete="off"></el-input>
+            </el-form-item>
+          </el-form>
+          <el-button size="medium" @click="dialogFormVisible = false">取 消</el-button>
+          <el-button size="medium" type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        </el-tab-pane>
+      </el-tabs>
+      <!--<div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      </div>-->
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import POWERMODE from '../../../static/js/activate'
 export default {
   name: 'word-book',
-  data: function () {
+  data () {
     return {
       wordsData: [
         {
@@ -117,7 +159,26 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      activeName: 'first',
+      dialogFormVisible: true,
+      form: {
+        name: ''
+      },
+      formLabelWidth: '80px'
+    }
+  },
+  mounted () {
+    let sw = window.screen.width
+    if (sw > 1200) {
+      POWERMODE.colorful = true
+      POWERMODE.shake = false
+      document.body.addEventListener('input', POWERMODE)
+    }
+  },
+  methods: {
+    editWord: function () {
+      console.log(1)
     }
   }
 }
@@ -131,6 +192,11 @@ export default {
     min-height: 500px;
     margin: auto;
     background: #14ddd6;
+  }
+  .edit-word {
+    width: 1100px;
+    margin: auto;
+    padding: 10px;
   }
   .word-book-content-li {
     margin-bottom: 10px;
