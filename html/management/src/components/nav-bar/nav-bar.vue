@@ -170,6 +170,7 @@ export default {
     float: left;
     z-index: 10;
     box-sizing: border-box;
+    color: #ffffff;
   }
   .nav-bar-list-skip:hover {
     background-color: rgba(236, 245, 255, .8);

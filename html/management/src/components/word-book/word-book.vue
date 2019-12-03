@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import POWERMODE from '../../../static/js/activate'
+// import POWERMODE from '../../../static/js/activate'
 export default {
   name: 'word-book',
   data () {
@@ -161,7 +161,7 @@ export default {
         }
       ],
       activeName: 'first',
-      dialogFormVisible: true,
+      dialogFormVisible: false,
       form: {
         name: ''
       },
@@ -169,12 +169,6 @@ export default {
     }
   },
   mounted () {
-    let sw = window.screen.width
-    if (sw > 1200) {
-      POWERMODE.colorful = true
-      POWERMODE.shake = false
-      document.body.addEventListener('input', POWERMODE)
-    }
   },
   methods: {
     editWord: function () {
@@ -191,7 +185,7 @@ export default {
     width: 1100px;
     min-height: 500px;
     margin: auto;
-    background: #14ddd6;
+    /*background: rgba(13, 11, 10, .5);*/
   }
   .edit-word {
     width: 1100px;
@@ -200,7 +194,7 @@ export default {
   }
   .word-book-content-li {
     margin-bottom: 10px;
-    background: #f9f9f9;
+    background: rgba(249, 249, 249, .5);
   }
   .word-book-content-li-time {
     line-height: 30px;
