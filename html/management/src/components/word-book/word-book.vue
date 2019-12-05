@@ -65,7 +65,7 @@
 </template>
 
 <script>
-// import POWERMODE from '../../../static/js/activate'
+import POWERMODE from '../../../static/js/activate'
 export default {
   name: 'word-book',
   data () {
@@ -169,6 +169,12 @@ export default {
     }
   },
   mounted () {
+    let sw = window.screen.width
+    if (sw > 1200) {
+      POWERMODE.colorful = true
+      POWERMODE.shake = false
+      document.body.addEventListener('input', POWERMODE)
+    }
   },
   methods: {
     editWord: function () {

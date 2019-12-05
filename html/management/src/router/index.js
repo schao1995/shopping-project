@@ -18,7 +18,7 @@ export default new Router({
         {
           path: 'content',
           components: {
-            default: resolve => require(['@/components/content-model/content-model.vue'], resolve),
+            default: resolve => require(['@/components/content-module/content-module.vue'], resolve),
             'nav-bar': resolve => require(['@/components/nav-bar/nav-bar.vue'], resolve)
           },
           children: [

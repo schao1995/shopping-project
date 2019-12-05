@@ -12,12 +12,30 @@
         <div class="essay-content-list-detail">{{ list.detail}}</div>
       </li>
     </ul>
-    <el-dialog title="编辑文章" :visible.sync="dialogFormVisible">
-      <edit-module/>
-      <!--<div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-      </div>-->
+    <el-dialog title="编辑文章" :visible.sync="dialogFormVisible" @close="closeDialog">
+      <div style="margin:0 5%; width: 90%;">
+        <!--<edit-module
+          class="editor"
+          :value="content"
+          :setting="editorSetting"
+          @show="editors"
+          :url              = "Url"
+          :max-size         = "MaxSize"
+          :accept           = "Accept"
+          :with-credentials = "withCredentials"
+          @on-upload-fail         = "onEditorReady"
+          @on-upload-success= "onEditorUploadComplete"></edit-module>-->
+
+        <edit-module v-model="content"
+                     :disabled="disabled"
+                     @onClick="onClick"
+                     @input="editors"
+                     ref="editor"></edit-module>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
+        <el-button size="mini" type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -43,10 +61,26 @@ export default {
           detail: 'we'
         }
       ],
-      dialogFormVisible: true
+      dialogFormVisible: false,
+      disabled: false,
+      content: '' // 富文本编辑器双向绑定的内容
     }
   },
-  components: { editModule }
+  components: { editModule },
+  methods: {
+    editors (content) { // editor组件传过来的值赋给content
+      console.log(content)
+      this.content = content
+    },
+    onClick (e, editor) {
+      console.log('Element clicked')
+      console.log(e)
+      console.log(editor)
+    },
+    closeDialog () {
+      this.$refs.editor.clear()
+    }
+  }
 }
 </script>
 
