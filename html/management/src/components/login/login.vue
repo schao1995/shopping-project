@@ -52,7 +52,17 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$router.push({ path: '/public' })
+          // let url = 'http://localhost:3000'
+          console.log(this.formLogin)
+          // eslint-disable-next-line no-undef
+          this.$axios.post('api/users', this.formLogin)
+            .then(function (response) {
+              console.log(response)
+            })
+            .catch(function (error) {
+              console.log(error)
+            })
+          // this.$router.push({ path: '/public' })
         } else {
           console.log('error submit!!')
           return false

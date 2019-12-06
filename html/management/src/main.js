@@ -11,6 +11,11 @@ import './assets/css/public.css'
 import ElementUi from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
+import axios from 'axios'
+
+axios.defaults.headers.post['Content-type'] = 'application/json'
+Vue.prototype.$axios = axios
+
 Vue.use(ElementUi)
 
 Vue.config.productionTip = false
