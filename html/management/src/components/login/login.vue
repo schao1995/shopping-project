@@ -52,16 +52,16 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          // let url = 'http://localhost:3000'
-          console.log(this.formLogin)
           // eslint-disable-next-line no-undef
-          this.$axios.post('api/users', this.formLogin)
-            .then(function (response) {
-              console.log(response)
-            })
-            .catch(function (error) {
-              console.log(error)
-            })
+          this.$axios({
+            method: 'post',
+            url: 'api/users',
+            data: this.$qs.stringify(this.formLogin)
+          }).then(function (response) {
+            console.log(response.data)
+          }).catch(function (error) {
+            console.log(error)
+          })
           // this.$router.push({ path: '/public' })
         } else {
           console.log('error submit!!')
