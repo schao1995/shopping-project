@@ -55,8 +55,15 @@ export default {
           // eslint-disable-next-line no-undef
           this.$axios({
             method: 'post',
-            url: 'api/users',
-            data: this.$qs.stringify(this.formLogin)
+            url: '/api/man/users',
+            data: {
+              username: this.formLogin.loginName,
+              password: this.formLogin.loginPass
+            }
+            /* data: this.$qs.stringify({
+              username: this.formLogin.loginName,
+              password: this.formLogin.loginPass
+            }) */
           }).then(function (response) {
             console.log(response.data)
           }).catch(function (error) {

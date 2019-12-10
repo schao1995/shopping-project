@@ -16,6 +16,7 @@ import qs from 'qs'
 Vue.prototype.$qs = qs
 
 axios.defaults.headers.post['Content-type'] = 'application/json'
+// axios.defaults.baseURL = 'http://localhost:8080/management_war/'
 Vue.prototype.$axios = axios
 
 Vue.use(ElementUi)
