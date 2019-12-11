@@ -15,8 +15,10 @@ import axios from 'axios'
 import qs from 'qs'
 Vue.prototype.$qs = qs
 
-axios.defaults.headers.post['Content-type'] = 'application/json'
-// axios.defaults.baseURL = 'http://localhost:8080/management_war/'
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded'
+Vue.prototype.$axios = axios
+
 Vue.prototype.$axios = axios
 
 Vue.use(ElementUi)

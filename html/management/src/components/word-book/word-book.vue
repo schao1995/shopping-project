@@ -169,6 +169,22 @@ export default {
     }
   },
   mounted () {
+    console.log(sessionStorage.getItem('token'))
+    this.$axios({
+      method: 'post',
+      url: '/api/word-book',
+      headers: {
+        'token': sessionStorage.getItem('token')
+      }/* ,
+      data: this.$qs.stringify({
+        username: this.formLogin.loginName,
+        password: this.formLogin.loginPass
+      }) */
+    }).then(function (response) {
+      console.log(response.data)
+    }).catch(function (error) {
+      console.log(error)
+    })
     let sw = window.screen.width
     if (sw > 1200) {
       POWERMODE.colorful = true

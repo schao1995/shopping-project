@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import POWERMODE from '../../../static/js/activate'
 export default {
   name: 'login',
   data () {
@@ -48,24 +49,39 @@ export default {
       }
     }
   },
+  mounted () {
+    let sw = window.screen.width
+    if (sw > 1200) {
+      POWERMODE.colorful = true
+      POWERMODE.shake = false
+      document.body.addEventListener('input', POWERMODE)
+    }
+  },
   methods: {
     submitForm (formName) {
+      let that = this
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // eslint-disable-next-line no-undef
           this.$axios({
             method: 'post',
-            url: '/api/man/users',
-            data: {
+            url: '/api/users',
+            /* data: {
               username: this.formLogin.loginName,
               password: this.formLogin.loginPass
-            }
-            /* data: this.$qs.stringify({
+            } */
+            data: this.$qs.stringify({
               username: this.formLogin.loginName,
               password: this.formLogin.loginPass
-            }) */
+            })
           }).then(function (response) {
             console.log(response.data)
+            if (response.data.code === -1) {
+              that.$message.error(response.data.msg)
+            } else {
+              sessionStorage.setItem('token', response.data.token)
+              that.$router.push({ path: '/public' })
+            }
           }).catch(function (error) {
             console.log(error)
           })
