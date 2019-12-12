@@ -29,7 +29,7 @@ export default {
     }
   },
   mounted () {
-    console.log(this.caterpillarData)
+    // console.log(this.caterpillarData)
   },
   watch: {
     caterpillarData: {
@@ -121,7 +121,7 @@ export default {
       ctx.lineTo(this.startPosition + this.headMove, this.crawlX)
       ctx.stroke()
       if (this.isLimit) {
-        console.log(this.isStop)
+        // console.log(this.isStop)
         if (this.isStop > 0) {
           console.log('stop')
           this.isDraw = false

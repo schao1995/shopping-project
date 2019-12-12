@@ -9,12 +9,7 @@
           <li style="height: 30px;overflow: hidden" class="word-book-content-li-words-soundmarkUrl">{{ words.soundmarkUrl }}</li>
           <li class="word-book-content-li-words-paraphrase">
             <ul class="word-book-content-li-words-paraphrase-ul">
-              <li v-for="(paraphrase, key3) in words.paraphrase" :key="key3" class="word-book-content-li-words-paraphrase-li">
-                <div class="word-book-content-li-words-paraphrase-li-pos">{{ paraphrase.pos }}.</div>
-                <div class="word-book-content-li-words-paraphrase-li-content">
-                  <span v-for="(paraphraseContent, key4) in paraphrase.content" :key="key4">{{ paraphraseContent }}<span style="padding-right: 5px" v-show="key4 !== paraphrase.content.length - 1">;</span></span>
-                </div>
-              </li>
+              <li v-for="(paraphrase, key3) in words.paraphrase" :key="key3" class="word-book-content-li-words-paraphrase-li">{{ paraphrase }}</li>
             </ul>
           </li>
         </ul>
@@ -78,26 +73,26 @@ export default {
               word: 'a',
               soundmark: '/eɪ/',
               soundmarkUrl: '',
-              paraphrase: [{
-                pos: 'art',
-                content: ['一', '任一', '每一']
-              }]
+              paraphrase: [
+                'art, "一", "任一", "每一"',
+                'art, "一", "任一", "每一"'
+              ]
             }, {
               word: 'a',
               soundmark: '/eɪ/',
               soundmarkUrl: '',
-              paraphrase: [{
-                pos: 'art',
-                content: ['一', '任一', '每一']
-              }]
+              paraphrase: [
+                'art, "一", "任一", "每一"',
+                'art, "一", "任一", "每一"'
+              ]
             }, {
               word: 'a',
               soundmark: '/eɪ/',
               soundmarkUrl: '',
-              paraphrase: [{
-                pos: 'art',
-                content: ['一', '任一', '每一']
-              }]
+              paraphrase: [
+                'art, "一", "任一", "每一"',
+                'art, "一", "任一", "每一"'
+              ]
             }
           ]
         }, {
@@ -107,26 +102,26 @@ export default {
               word: 'a',
               soundmark: '/eɪ/',
               soundmarkUrl: '',
-              paraphrase: [{
-                pos: 'art',
-                content: ['一', '任一', '每一']
-              }]
+              paraphrase: [
+                'art, "一", "任一", "每一"',
+                'art, "一", "任一", "每一"'
+              ]
             }, {
               word: 'a',
               soundmark: '/eɪ/',
               soundmarkUrl: '',
-              paraphrase: [{
-                pos: 'art',
-                content: ['一', '任一', '每一']
-              }]
+              paraphrase: [
+                'art, "一", "任一", "每一"',
+                'art, "一", "任一", "每一"'
+              ]
             }, {
               word: 'a',
               soundmark: '/eɪ/',
               soundmarkUrl: '',
-              paraphrase: [{
-                pos: 'art',
-                content: ['一', '任一', '每一']
-              }]
+              paraphrase: [
+                'art, "一", "任一", "每一"',
+                'art, "一", "任一", "每一"'
+              ]
             }
           ]
         }, {
@@ -136,26 +131,26 @@ export default {
               word: 'a',
               soundmark: '/eɪ/',
               soundmarkUrl: '',
-              paraphrase: [{
-                pos: 'art',
-                content: ['一', '任一', '每一']
-              }]
+              paraphrase: [
+                'art, "一", "任一", "每一"',
+                'art, "一", "任一", "每一"'
+              ]
             }, {
               word: 'a',
               soundmark: '/eɪ/',
               soundmarkUrl: '',
-              paraphrase: [{
-                pos: 'art',
-                content: ['一', '任一', '每一']
-              }]
+              paraphrase: [
+                'art, "一", "任一", "每一"',
+                'art, "一", "任一", "每一"'
+              ]
             }, {
               word: 'a',
               soundmark: '/eɪ/',
               soundmarkUrl: '',
-              paraphrase: [{
-                pos: 'art',
-                content: ['一', '任一', '每一']
-              }]
+              paraphrase: [
+                'art, "一", "任一", "每一"',
+                'art, "一", "任一", "每一"'
+              ]
             }
           ]
         }
@@ -169,7 +164,8 @@ export default {
     }
   },
   mounted () {
-    console.log(sessionStorage.getItem('token'))
+    let that = this
+    // console.log(sessionStorage.getItem('token'))
     this.$axios({
       method: 'post',
       url: '/api/word-book',
@@ -182,6 +178,9 @@ export default {
       }) */
     }).then(function (response) {
       console.log(response.data)
+      if (response.data.code === 401) {
+        that.$router.push({ path: '/' })
+      }
     }).catch(function (error) {
       console.log(error)
     })
