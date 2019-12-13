@@ -1,18 +1,29 @@
 <template>
   <div class="word-book">
+    <audio controls src="http://dict.youdao.com/dictvoice?audio=and&type=2"></audio>
     <div class="word-book-content">
       <div v-for="(wordsContent, key1) in wordsData" :key="key1" class="word-book-content-li">
         <p class="word-book-content-li-time">{{ wordsContent.time }}</p>
-        <ul v-for="(words, key2) in wordsContent.words" :key="key2" class="word-book-content-li-words">
-          <li class="word-book-content-li-words-word">{{ words.word }}</li>
-          <li class="word-book-content-li-words-soundmark">{{ words.soundmark }}</li>
-          <li style="height: 30px;overflow: hidden" class="word-book-content-li-words-soundmarkUrl">{{ words.soundmarkUrl }}</li>
-          <li class="word-book-content-li-words-paraphrase">
+        <div v-for="(words, key2) in wordsContent.words" :key="key2" class="word-book-content-li-parent">
+          <div class="word-book-content-li-words-word">{{ words.word }}</div>
+          <ul class="word-book-content-li-words">
+            <li class="word-book-content-li-words-soundmark">{{ words.soundmarkF[0] }}</li>
+            <li class="word-book-content-li-words-soundmark">{{ words.soundmarkF[1] }}</li>
+            <li style="height: 30px;overflow: hidden;margin-right: 40px" @mouseover="playAudio" class="word-book-content-li-words-soundmarkUrl">
+              <audio :src="words.soundmarkF[2]"></audio>
+            </li>
+            <li class="word-book-content-li-words-soundmark">{{ words.soundmarkS[0] }}</li>
+            <li class="word-book-content-li-words-soundmark">{{ words.soundmarkS[1] }}</li>
+            <li style="height: 30px;overflow: hidden" @mouseover="playAudio" class="word-book-content-li-words-soundmarkUrl">
+              <audio :src="words.soundmarkS[2]"></audio>
+            </li>
+          </ul>
+          <div class="word-book-content-li-words-paraphrase">
             <ul class="word-book-content-li-words-paraphrase-ul">
               <li v-for="(paraphrase, key3) in words.paraphrase" :key="key3" class="word-book-content-li-words-paraphrase-li">{{ paraphrase }}</li>
             </ul>
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
     </div>
     <div class="edit-word">
@@ -21,30 +32,30 @@
     <el-dialog title="编辑单词本" :visible.sync="dialogFormVisible">
       <el-tabs v-model="activeName" type="card" @tab-click="dialogFormVisible = true">
         <el-tab-pane label="添加" name="first">
-          <el-form :model="form">
+          <el-form :model="addWord">
             <el-form-item label="新增单词" :label-width="formLabelWidth">
-              <el-input v-model="form.name" autocomplete="off"></el-input>
+              <el-input v-model="addWord.word" autocomplete="off"></el-input>
             </el-form-item>
           </el-form>
           <el-button size="medium" @click="dialogFormVisible = false">取 消</el-button>
-          <el-button size="medium" type="primary" @click="dialogFormVisible = false">确 定</el-button>
+          <el-button size="medium" type="primary" @click="appendWord">确 定</el-button>
         </el-tab-pane>
         <el-tab-pane label="修改" name="second">
-          <el-form :model="form">
+          <el-form :model="addWord">
             <el-form-item label="修改单词" :label-width="formLabelWidth">
-              <el-input v-model="form.name" autocomplete="off"></el-input>
+              <el-input v-model="addWord.word" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="修改结果" :label-width="formLabelWidth">
-              <el-input v-model="form.name" autocomplete="off"></el-input>
+              <el-input v-model="addWord.word" autocomplete="off"></el-input>
             </el-form-item>
           </el-form>
           <el-button size="medium" @click="dialogFormVisible = false">取 消</el-button>
           <el-button size="medium" type="primary" @click="dialogFormVisible = false">确 定</el-button>
         </el-tab-pane>
         <el-tab-pane label="删除" name="third">
-          <el-form :model="form">
+          <el-form :model="addWord">
             <el-form-item label="删除单词" :label-width="formLabelWidth">
-              <el-input v-model="form.name" autocomplete="off"></el-input>
+              <el-input v-model="addWord.word" autocomplete="off"></el-input>
             </el-form-item>
           </el-form>
           <el-button size="medium" @click="dialogFormVisible = false">取 消</el-button>
@@ -70,83 +81,18 @@ export default {
           time: '2019-11-11',
           words: [
             {
+              id: 1,
               word: 'a',
-              soundmark: '/eɪ/',
-              soundmarkUrl: '',
-              paraphrase: [
-                'art, "一", "任一", "每一"',
-                'art, "一", "任一", "每一"'
-              ]
-            }, {
-              word: 'a',
-              soundmark: '/eɪ/',
-              soundmarkUrl: '',
-              paraphrase: [
-                'art, "一", "任一", "每一"',
-                'art, "一", "任一", "每一"'
-              ]
-            }, {
-              word: 'a',
-              soundmark: '/eɪ/',
-              soundmarkUrl: '',
-              paraphrase: [
-                'art, "一", "任一", "每一"',
-                'art, "一", "任一", "每一"'
-              ]
-            }
-          ]
-        }, {
-          time: '2019-11-11',
-          words: [
-            {
-              word: 'a',
-              soundmark: '/eɪ/',
-              soundmarkUrl: '',
-              paraphrase: [
-                'art, "一", "任一", "每一"',
-                'art, "一", "任一", "每一"'
-              ]
-            }, {
-              word: 'a',
-              soundmark: '/eɪ/',
-              soundmarkUrl: '',
-              paraphrase: [
-                'art, "一", "任一", "每一"',
-                'art, "一", "任一", "每一"'
-              ]
-            }, {
-              word: 'a',
-              soundmark: '/eɪ/',
-              soundmarkUrl: '',
-              paraphrase: [
-                'art, "一", "任一", "每一"',
-                'art, "一", "任一", "每一"'
-              ]
-            }
-          ]
-        }, {
-          time: '2019-11-11',
-          words: [
-            {
-              word: 'a',
-              soundmark: '/eɪ/',
-              soundmarkUrl: '',
-              paraphrase: [
-                'art, "一", "任一", "每一"',
-                'art, "一", "任一", "每一"'
-              ]
-            }, {
-              word: 'a',
-              soundmark: '/eɪ/',
-              soundmarkUrl: '',
-              paraphrase: [
-                'art, "一", "任一", "每一"',
-                'art, "一", "任一", "每一"'
-              ]
-            }, {
-              word: 'a',
-              soundmark: '/eɪ/',
-              soundmarkUrl: '',
+              soundmarkF: [
+                'a',
+                'ewewewewewe',
+                'http://dict.youdao.com/dictvoice?audio=and&type=1'
+              ],
+              soundmarkS: [
+                'a',
+                'wewe',
+                'http://dict.youdao.com/dictvoice?audio=and&type=2'
+              ],
               paraphrase: [
                 'art, "一", "任一", "每一"',
                 'art, "一", "任一", "每一"'
@@ -157,43 +103,77 @@ export default {
       ],
       activeName: 'first',
       dialogFormVisible: false,
-      form: {
-        name: ''
+      addWord: {
+        word: ''
       },
       formLabelWidth: '80px'
     }
   },
   mounted () {
-    let that = this
-    // console.log(sessionStorage.getItem('token'))
-    this.$axios({
-      method: 'post',
-      url: '/api/word-book',
-      headers: {
-        'token': sessionStorage.getItem('token')
-      }/* ,
-      data: this.$qs.stringify({
-        username: this.formLogin.loginName,
-        password: this.formLogin.loginPass
-      }) */
-    }).then(function (response) {
-      console.log(response.data)
-      if (response.data.code === 401) {
-        that.$router.push({ path: '/' })
-      }
-    }).catch(function (error) {
-      console.log(error)
-    })
+    /* let date = new Date()
+    console.log(date.toLocaleDateString()) */
     let sw = window.screen.width
     if (sw > 1200) {
       POWERMODE.colorful = true
       POWERMODE.shake = false
       document.body.addEventListener('input', POWERMODE)
     }
+    this.selectWord()
   },
   methods: {
     editWord: function () {
       console.log(1)
+    },
+    playAudio: function (e) { // 划过小喇叭播放mp3
+      if (e.target.firstElementChild !== null) {
+        if (e.target.firstElementChild.paused) { // 判断音乐是否在播放中，暂停状态
+          e.target.firstElementChild.play() // 音乐播放
+        } else { // 播放状态
+          // e.target.firstElementChild.pause() // 音乐停止
+        }
+      }
+    },
+    selectWord: function () { // 查询单词
+      console.log(sessionStorage.getItem('token'))
+      this.$axios({
+        method: 'post',
+        url: '/api/word-book',
+        headers: {
+          'token': sessionStorage.getItem('token')
+        }/* ,
+      data: this.$qs.stringify({
+        username: this.formLogin.loginName,
+        password: this.formLogin.loginPass
+      }) */
+      }).then((response) => {
+        console.log(response.data)
+        if (response.data.code === 401) {
+          this.$router.push({ path: '/' })
+        }
+        this.wordsData = response.data.data
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    appendWord: function () {
+      this.$axios({
+        method: 'post',
+        url: '/api/appendWord',
+        headers: {
+          'token': sessionStorage.getItem('token')
+        },
+        data: this.$qs.stringify({
+          word: this.addWord.word
+        })
+      }).then((response) => {
+        console.log(response.data)
+        if (response.data.code === 401) {
+          this.$router.push({ path: '/' })
+        }
+        this.wordsData = response.data.data
+      }).catch((error) => {
+        console.log(error)
+      })
     }
   }
 }
@@ -221,15 +201,26 @@ export default {
     line-height: 30px;
     padding: 10px 0 0 20px;
   }
-  .word-book-content-li-words-word, .word-book-content-li-words-soundmark, .word-book-content-li-words-soundmarkUrl {
+  .word-book-content-li-words-soundmark, .word-book-content-li-words-soundmarkUrl {
     float: left;
   }
   .word-book-content-li-words-paraphrase {
-    padding-top: 30px;
+    padding-top: 20px;
   }
-  .word-book-content-li-words {
+  /*.word-book-content-li-words {
     padding: 10px 20px;
     line-height: 30px;
+  }
+  .word-book-content-li-words {
+    float: left;
+  }*/
+  .word-book-content-li-parent {
+    margin: 10px 20px;
+    padding: 5px 10px;
+    min-width: 240px;
+    background-color: rgba(249, 249, 249, .8);
+    line-height: 30px;
+    float: left;
   }
   .word-book-content-li-words:after{
     content:"";
@@ -239,14 +230,12 @@ export default {
     visibility:hidden;
     clear:both;
   }
+  .word-book-content-li-words-word{
+    font-weight: 900;
+    font-size: 18px;
+  }
   .word-book-content-li-words-word, .word-book-content-li-words-soundmark {
     padding-right: 10px;
-  }
-  .word-book-content-li-words-paraphrase-li-pos {
-    padding-right: 5px;
-  }
-  .word-book-content-li-words {
-    float: left;
   }
   .word-book-content-li:after{
     content:"";
@@ -264,13 +253,6 @@ export default {
     visibility:hidden;
     clear:both;
   }
-  .word-book-content-li-words-paraphrase-li-pos, .word-book-content-li-words-paraphrase-li-content {
-    float: left;
-  }
-  .word-book-content-li-words-paraphrase-li-content {
-    max-width: 300px;
-    letter-spacing: 3px;
-  }
   .word-book-content-li-words-soundmarkUrl {
     width: 16px;
     height: 30px;
@@ -279,6 +261,9 @@ export default {
     background-size: 16px 16px;
     background-repeat: no-repeat;
     cursor: pointer;
+  }
+  .word-book-content-li-words-soundmarkUrl:first-child {
+    margin-right: 40px;
   }
   .word-book-content-li-words-soundmarkUrl:hover {
     background-image: url("../../../static/imgs/trumpet-on.png");
