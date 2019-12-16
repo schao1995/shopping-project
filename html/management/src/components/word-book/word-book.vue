@@ -1,20 +1,20 @@
 <template>
   <div class="word-book">
-    <audio controls src="http://dict.youdao.com/dictvoice?audio=and&type=2"></audio>
+    <!--<audio controls src="http://dict.youdao.com/dictvoice?audio=and&type=2"></audio>-->
     <div class="word-book-content">
       <div v-for="(wordsContent, key1) in wordsData" :key="key1" class="word-book-content-li">
         <p class="word-book-content-li-time">{{ wordsContent.time }}</p>
         <div v-for="(words, key2) in wordsContent.words" :key="key2" class="word-book-content-li-parent">
           <div class="word-book-content-li-words-word">{{ words.word }}</div>
           <ul class="word-book-content-li-words">
-            <li class="word-book-content-li-words-soundmark">{{ words.soundmarkF[0] }}</li>
-            <li class="word-book-content-li-words-soundmark">{{ words.soundmarkF[1] }}</li>
-            <li style="height: 30px;overflow: hidden;margin-right: 40px" @mouseover="playAudio" class="word-book-content-li-words-soundmarkUrl">
+            <li v-if="words.soundmarkF[0]" class="word-book-content-li-words-soundmark">{{ words.soundmarkF[0] }}</li>
+            <li v-if="words.soundmarkF[0]" class="word-book-content-li-words-soundmark">{{ words.soundmarkF[1] }}</li>
+            <li v-if="words.soundmarkF[0]" style="height: 30px;overflow: hidden;margin-right: 40px" @mouseover="playAudio" class="word-book-content-li-words-soundmarkUrl">
               <audio :src="words.soundmarkF[2]"></audio>
             </li>
-            <li class="word-book-content-li-words-soundmark">{{ words.soundmarkS[0] }}</li>
-            <li class="word-book-content-li-words-soundmark">{{ words.soundmarkS[1] }}</li>
-            <li style="height: 30px;overflow: hidden" @mouseover="playAudio" class="word-book-content-li-words-soundmarkUrl">
+            <li v-if="words.soundmarkS[0]" class="word-book-content-li-words-soundmark">{{ words.soundmarkS[0] }}</li>
+            <li v-if="words.soundmarkS[0]" class="word-book-content-li-words-soundmark">{{ words.soundmarkS[1] }}</li>
+            <li v-if="words.soundmarkS[0]" style="height: 30px;overflow: hidden" @mouseover="playAudio" class="word-book-content-li-words-soundmarkUrl">
               <audio :src="words.soundmarkS[2]"></audio>
             </li>
           </ul>
@@ -29,7 +29,7 @@
     <div class="edit-word">
       <el-button size="medium" type="primary" @click="dialogFormVisible = true">编辑</el-button>
     </div>
-    <el-dialog title="编辑单词本" :visible.sync="dialogFormVisible">
+    <el-dialog title="编辑单词本" :visible.sync="dialogFormVisible" @close="clearInput">
       <el-tabs v-model="activeName" type="card" @tab-click="dialogFormVisible = true">
         <el-tab-pane label="添加" name="first">
           <el-form :model="addWord">
@@ -78,24 +78,24 @@ export default {
     return {
       wordsData: [
         {
-          time: '2019-11-11',
+          time: '',
           words: [
             {
-              id: 1,
-              word: 'a',
+              id: '1',
+              word: '',
               soundmarkF: [
-                'a',
-                'ewewewewewe',
-                'http://dict.youdao.com/dictvoice?audio=and&type=1'
+                '',
+                '',
+                ''
               ],
               soundmarkS: [
-                'a',
-                'wewe',
-                'http://dict.youdao.com/dictvoice?audio=and&type=2'
+                '',
+                '',
+                ''
               ],
               paraphrase: [
-                'art, "一", "任一", "每一"',
-                'art, "一", "任一", "每一"'
+                '',
+                ''
               ]
             }
           ]
@@ -156,6 +156,14 @@ export default {
       })
     },
     appendWord: function () {
+      let isOnlyAWord = this.addWord.word.indexOf(' ')
+      if (isOnlyAWord > 0) {
+        this.$message({
+          message: '请确保输入内容为一个单词',
+          type: 'warning'
+        })
+        return
+      }
       this.$axios({
         method: 'post',
         url: '/api/appendWord',
@@ -169,13 +177,19 @@ export default {
         console.log(response.data)
         if (response.data.code === 401) {
           this.$router.push({ path: '/' })
+        } else if (response.data.code === -1) {
+          this.$message.error(response.data.msg)
         }
-        this.wordsData = response.data.data
+        // this.selectWord()
       }).catch((error) => {
         console.log(error)
       })
+    },
+    clearInput: function () {
+      this.addWord.word = ''
     }
   }
+
 }
 </script>
 

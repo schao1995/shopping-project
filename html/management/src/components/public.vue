@@ -13,11 +13,10 @@ export default {
 
 <style scoped>
   .public {
-    height: 100%;
     background-image: url("../../static/imgs/bg.jpg");
-    background-repeat: no-repeat;
+    background-repeat: repeat-y;
     background-position: center;
-    background-size: auto 100%;
+    background-size: auto;
   }
   .nav-bar {
     width: 100%;

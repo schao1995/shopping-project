@@ -9,6 +9,7 @@
               <el-image
                 class="print-list-detail-set-el-img"
                 :src="printing.artistImage"
+                fit="scale-down"
                 :preview-src-list="printing.srcList">
                 <div slot="error" class="image-slot">
                   <i class="el-icon-picture-outline"></i>
@@ -22,6 +23,7 @@
               <el-image
                 class="print-list-detail-set-el-img"
                 :src="printing.freehandImage"
+                fit="scale-down"
                 :preview-src-list="printing.srcList">
                 <div slot="error" class="image-slot">
                   <i class="el-icon-picture-outline"></i>
@@ -113,12 +115,7 @@ export default {
     position: relative;
   }
   .print-list-detail-set-el-img {
-    width: 100%;
-    display: block;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    height: 210px;
   }
   .print-list-detail-set-msg {
     height: 30px;
