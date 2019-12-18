@@ -27,6 +27,7 @@ export default new Router({
               name: 'word-book',
               component: resolve => require(['@/components/word-book/word-book.vue'], resolve),
               meta: {
+                requireAuth: true,
                 menuShow: true,
                 menuName: '单词本'
               }
@@ -35,6 +36,7 @@ export default new Router({
               name: 'essay',
               component: resolve => require(['@/components/essay/essay.vue'], resolve),
               meta: {
+                requireAuth: true,
                 menuShow: true,
                 menuName: '文章'
               }
@@ -43,6 +45,7 @@ export default new Router({
               name: 'painting',
               component: resolve => require(['@/components/painting/painting.vue'], resolve),
               meta: {
+                requireAuth: true,
                 menuShow: true,
                 menuName: '画'
               }
@@ -51,6 +54,7 @@ export default new Router({
               name: 'user-manage',
               component: resolve => require(['@/components/user-manage/user-manage.vue'], resolve),
               meta: {
+                requireAuth: true,
                 menuShow: true,
                 menuName: '用户管理'
               }
@@ -59,6 +63,7 @@ export default new Router({
               name: 'log',
               component: resolve => require(['@/components/log/log.vue'], resolve),
               meta: {
+                requireAuth: true,
                 menuShow: true,
                 menuName: '日志'
               }

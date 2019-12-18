@@ -17,6 +17,7 @@
     <ul class="nav-bar-list">
       <li class="nav-bar-list-canvas"><caterpillar @isChange="isChange" :caterpillarData="caterpillarData"/></li>
       <li v-for="(detail, index) in list" :key="index" @click="skip(index)" :class="[ index === activeIndex && isChangeOver ? 'nav-bar-list-choose nav-bar-list-skip' : 'nav-bar-list-skip' ]">{{ detail }}</li>
+      <li class="loginOut"><el-button type="primary" size="mini" @click="loginOut">登 出</el-button></li>
     </ul>
   </div>
 </template>
@@ -113,6 +114,10 @@ export default {
     isChange () {
       this.isChangeOver = true
       console.log('触发')
+    },
+    loginOut () {
+      localStorage.removeItem('token')
+      this.$router.push({ path: '/' })
     }
   }
 }
@@ -179,5 +184,10 @@ export default {
   .nav-bar-list-choose {
     color: #ffd04b;
     border-bottom: 2px solid #ffd04b;
+  }
+  .loginOut {
+    float: right;
+    height: 60px;
+    line-height: 60px;
   }
 </style>

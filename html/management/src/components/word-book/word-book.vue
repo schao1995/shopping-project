@@ -134,12 +134,12 @@ export default {
       }
     },
     selectWord: function () { // 查询单词
-      console.log(sessionStorage.getItem('token'))
+      console.log(localStorage.getItem('token'))
       this.$axios({
         method: 'post',
         url: '/api/word-book',
         headers: {
-          'token': sessionStorage.getItem('token')
+          'token': localStorage.getItem('token')
         }/* ,
       data: this.$qs.stringify({
         username: this.formLogin.loginName,
@@ -168,7 +168,7 @@ export default {
         method: 'post',
         url: '/api/appendWord',
         headers: {
-          'token': sessionStorage.getItem('token')
+          'token': localStorage.getItem('token')
         },
         data: this.$qs.stringify({
           word: this.addWord.word

@@ -79,7 +79,7 @@ export default {
             if (response.data.code === -1) {
               that.$message.error(response.data.msg)
             } else {
-              sessionStorage.setItem('token', response.data.token)
+              localStorage.setItem('token', response.data.token)
               that.$router.push({ path: '/public' })
             }
           }).catch(function (error) {
