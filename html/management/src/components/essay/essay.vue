@@ -6,12 +6,13 @@
           <p>{{ list.title }}</p>
           <div class="essay-content-list-title-button">
             <el-button size="mini" type="primary" @click="preview(list.title)">预 览</el-button>
-            <el-button size="mini" @click="editEssay(list.title, list.id)">编 辑</el-button>
+            <el-button size="mini" @click="editEssay(list.title, list.id, list.explain)">编 辑</el-button>
           </div>
         </div>
         <div class="essay-content-list-detail">{{ list.explain }}</div>
       </li>
     </ul>
+    <div class="newEssay"><el-button size="mini" type="primary" @click="editEssay">新 建</el-button></div>
     <el-dialog title="预览" :visible.sync="dialogVisible">
       <div v-html="previewContent"></div>
     </el-dialog>
@@ -93,6 +94,7 @@ export default {
     },
     closeDialog () {
       this.$refs.editor.clear()
+      this.selectEssay()
     },
     addAnnotation () {
       let ann = this.annotation.input.replace(/(^\s*)|(\s*$)/g, '')
@@ -101,10 +103,15 @@ export default {
         return
       }
       let reg = new RegExp('(.*)' + ann, 'g')
-      this.content = this.content.replace(reg, ' $1<el-tooltip placement="top">\n' +
-          '    <div slot="content">' + this.annotation.area + '</div>\n' +
-          '    <el-button type="text">' + ann + '</el-button>\n' +
-          '    </el-tooltip> ')
+      this.content = this.content.replace(reg, ' $1 <span class="ann-parent">' +
+          '    <span class="ann-title" slot="content">' + this.annotation.area + '</span>' +
+          '    <span class="ann-msg">' + ann + '</span>' +
+          '    </span> ')
+      /* this.content = this.content.replace(reg, '$1<div\n' +
+        'style="display: inline-block; position: relative">\n' +
+        '<div style="position: absolute;height: 30px;top: -30px;">' + this.annotation.area + '</div>\n' +
+        '<span >' + ann + '</span>\n' +
+        '</div>') */
     },
     selectEssay () {
       this.$axios({
@@ -133,10 +140,11 @@ export default {
       this.dialogVisible = true
       this.essayDetail(title)
     },
-    editEssay (title, id) {
+    editEssay (title, id, explain) {
       this.dialogFormVisible = true
-      this.id = id
-      if (title) {
+      if (typeof title === 'string') {
+        this.id = id
+        this.explain = explain
         this.oldTitle = title
         this.title = title
         this.essayDetail(title)
@@ -187,7 +195,10 @@ export default {
         } else if (response.data.code === -1) {
           this.$message.error(response.data.msg)
         } else {
-          this.$message('添加成功')
+          this.$message({
+            message: '添加成功',
+            type: 'success'
+          })
         }
       }).catch((error) => {
         console.log(error)
@@ -246,5 +257,8 @@ export default {
   }
   .annotationTextarea {
     width: 200px
+  }
+  .newEssay {
+    padding: 10px;
   }
 </style>
