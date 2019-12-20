@@ -51,23 +51,58 @@ export default {
           '../../../static/imgs/bg.jpg',
           '../../../static/imgs/bg1.jpg'
         ]
-      }, {
-        date: '19-11-11',
-        artistImage: '../../../static/imgs/bg.jpg',
-        freehandImage: '../../../static/imgs/bg.jpg',
-        srcList: [
-          '../../../static/imgs/bg.jpg',
-          '../../../static/imgs/bg1.jpg'
-        ]
-      }, {
-        date: '19-11-11',
-        artistImage: '../../../static/imgs/bg.jpg',
-        freehandImage: '../../../static/imgs/bg.jpg',
-        srcList: [
-          '../../../static/imgs/bg.jpg',
-          '../../../static/imgs/bg1.jpg'
-        ]
       }]
+    }
+  },
+  mounted () {
+    this.selectPaintings()
+  },
+  methods: {
+    selectPaintings () {
+      this.$axios({
+        method: 'post',
+        url: '/api/selectPaintings',
+        headers: {
+          'token': localStorage.getItem('token')
+        }/* ,
+        data: this.$qs.stringify({
+          word: this.addWord.word
+        }) */
+      }).then((response) => {
+        console.log(response.data)
+        if (response.data.code === 401) {
+          this.$router.push({ path: '/' })
+        } else if (response.data.code === -1) {
+          this.$message.error(response.data.msg)
+        } else {
+          this.essayList = response.data.data
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    addPaintings () {
+      this.$axios({
+        method: 'post',
+        url: '/api/addPaintings',
+        headers: {
+          'token': localStorage.getItem('token')
+        }/* ,
+        data: this.$qs.stringify({
+          word: this.addWord.word
+        }) */
+      }).then((response) => {
+        console.log(response.data)
+        if (response.data.code === 401) {
+          this.$router.push({ path: '/' })
+        } else if (response.data.code === -1) {
+          this.$message.error(response.data.msg)
+        } else {
+          this.essayList = response.data.data
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
     }
   }
 }
@@ -105,8 +140,8 @@ export default {
     text-align: center;
   }
   .print-list-detail-set-artist, .print-list-detail-set-freehand {
-    width: 220px;
-    padding: 0 10px;
+    width: 210px;
+    padding: 0 15px;
     text-align: center;
   }
   .print-list-detail-set-img {
