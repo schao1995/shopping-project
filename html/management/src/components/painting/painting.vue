@@ -35,6 +35,47 @@
         </ul>
       </li>
     </ul>
+    <div class="addPainting">
+      <el-button size="mini" type="primary" @click="showDialog">添 加</el-button>
+    </div>
+    <el-upload
+      action="#"
+      list-type="picture-card"
+      :on-change="handleChange"
+      :auto-upload="false">
+      <i slot="default" class="el-icon-plus"></i>
+      <div slot="file" slot-scope="{file}">
+        <img
+          class="el-upload-list__item-thumbnail"
+          :src="file.url" alt=""
+        >
+        <span class="el-upload-list__item-actions">
+        <span
+          class="el-upload-list__item-preview"
+          @click="handlePictureCardPreview(file)"
+        >
+          <i class="el-icon-zoom-in"></i>
+        </span>
+        <!--<span
+          v-if="!disabled"
+          class="el-upload-list__item-delete"
+          @click="handleDownload(file)"
+        >
+          <i class="el-icon-download"></i>
+        </span>-->
+        <span
+          v-if="!disabled"
+          class="el-upload-list__item-delete"
+          @click="handleRemove(file)"
+        >
+          <i class="el-icon-delete"></i>
+        </span>
+      </span>
+      </div>
+    </el-upload>
+    <el-dialog :visible.sync="dialogVisible">
+      <img width="100%" :src="dialogImageUrl" alt="">
+    </el-dialog>
   </div>
 </template>
 
@@ -45,23 +86,49 @@ export default {
     return {
       printingData: [{
         date: '19-11-11',
-        artistImage: '../../../static/imgs/bg.jpg',
-        freehandImage: '../../../static/imgs/bg.jpg',
+        artistImage: 'http://localhost:3000/static/images/a.jpg',
+        freehandImage: '../../../static/images/bg.jpg',
         srcList: [
-          '../../../static/imgs/bg.jpg',
-          '../../../static/imgs/bg1.jpg'
+          '../../../static/images/bg.jpg',
+          '../../../static/images/bg1.jpg'
         ]
-      }]
+      }],
+      dialogImageUrl: '',
+      dialogVisible: false,
+      disabled: false
     }
   },
   mounted () {
-    this.selectPaintings()
+    this.selectPainting()
   },
   methods: {
-    selectPaintings () {
+    selectPainting () {
       this.$axios({
         method: 'post',
-        url: '/api/selectPaintings',
+        url: '/api/selectPainting',
+        headers: {
+          'token': localStorage.getItem('token')
+        }/* ,
+        data: this.$qs.stringify({
+          word: this.addWord.word
+        }) */
+      }).then((response) => {
+        console.log(response.data)
+        if (response.data.code === 401) {
+          this.$router.push({ path: '/' })
+        } else if (response.data.code === -1) {
+          this.$message.error(response.data.msg)
+        } else {
+          // this.essayList = response.data.data
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    addPainting () {
+      this.$axios({
+        method: 'post',
+        url: '/api/addPainting',
         headers: {
           'token': localStorage.getItem('token')
         }/* ,
@@ -81,28 +148,22 @@ export default {
         console.log(error)
       })
     },
-    addPaintings () {
-      this.$axios({
-        method: 'post',
-        url: '/api/addPaintings',
-        headers: {
-          'token': localStorage.getItem('token')
-        }/* ,
-        data: this.$qs.stringify({
-          word: this.addWord.word
-        }) */
-      }).then((response) => {
-        console.log(response.data)
-        if (response.data.code === 401) {
-          this.$router.push({ path: '/' })
-        } else if (response.data.code === -1) {
-          this.$message.error(response.data.msg)
-        } else {
-          this.essayList = response.data.data
-        }
-      }).catch((error) => {
-        console.log(error)
-      })
+    showDialog () {
+
+    },
+    handleRemove (file) {
+      console.log(file)
+    },
+    handlePictureCardPreview (file) {
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
+    },
+    handleDownload (file) {
+      console.log(file)
+    },
+    handleChange (file, fileList) {
+      console.log('load')
+      this.fileList = fileList.slice(-3)
     }
   }
 }
@@ -151,10 +212,15 @@ export default {
   }
   .print-list-detail-set-el-img {
     height: 210px;
+    line-height: 210px;
   }
   .print-list-detail-set-msg {
     height: 30px;
     line-height: 30px;
     font-size: 14px;
+  }
+  .addPainting {
+    padding: 10px;
+    background-color: rgba(249, 249, 249, .5);
   }
 </style>

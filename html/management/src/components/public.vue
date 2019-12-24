@@ -13,7 +13,7 @@ export default {
 
 <style scoped>
   .public {
-    background-image: url("../../static/imgs/bg.jpg");
+    background-image: url("../../static/images/bg.jpg");
     background-repeat: repeat-y;
     background-position: center;
     background-size: auto;

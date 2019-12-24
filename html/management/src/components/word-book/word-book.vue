@@ -270,7 +270,7 @@ export default {
   .word-book-content-li-words-soundmarkUrl {
     width: 16px;
     height: 30px;
-    background-image: url("../../../static/imgs/trumpet.png");
+    background-image: url("../../../static/images/trumpet.png");
     background-position: center;
     background-size: 16px 16px;
     background-repeat: no-repeat;
@@ -280,6 +280,6 @@ export default {
     margin-right: 40px;
   }
   .word-book-content-li-words-soundmarkUrl:hover {
-    background-image: url("../../../static/imgs/trumpet-on.png");
+    background-image: url("../../../static/images/trumpet-on.png");
   }
 </style>
