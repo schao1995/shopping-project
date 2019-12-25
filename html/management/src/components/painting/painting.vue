@@ -2,7 +2,7 @@
   <div class="painting">
     <ul class="printing-list">
       <li v-for="(printing, key) in printingData" :key="key" class="print-list-detail">
-        <p class="print-list-detail-title">{{ printing.date }}</p>
+        <p class="print-list-detail-title">{{ printing.time }}</p>
         <ul class="print-list-detail-set">
           <li class="print-list-detail-set-artist">
             <div class="print-list-detail-set-img">
@@ -38,41 +38,35 @@
     <div class="addPainting">
       <el-button size="mini" type="primary" @click="showDialog">添 加</el-button>
     </div>
-    <el-upload
-      action="#"
-      list-type="picture-card"
-      :on-change="handleChange"
-      :auto-upload="false">
-      <i slot="default" class="el-icon-plus"></i>
-      <div slot="file" slot-scope="{file}">
-        <img
-          class="el-upload-list__item-thumbnail"
-          :src="file.url" alt=""
-        >
-        <span class="el-upload-list__item-actions">
-        <span
-          class="el-upload-list__item-preview"
-          @click="handlePictureCardPreview(file)"
-        >
-          <i class="el-icon-zoom-in"></i>
+    <el-dialog :visible.sync="uploadDialogVisible">
+      <!--<el-upload
+        action="#"
+        list-type="picture-card"
+        :on-change="handleChange"
+        :auto-upload="false">
+        <i slot="default" class="el-icon-plus"></i>
+        <div slot="file" slot-scope="{file}">
+          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
+          <span class="el-upload-list__item-actions">
+          <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)"><i class="el-icon-zoom-in"></i></span>
+          <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemove(file)"><i class="el-icon-delete"></i></span>
         </span>
-        <!--<span
-          v-if="!disabled"
-          class="el-upload-list__item-delete"
-          @click="handleDownload(file)"
-        >
-          <i class="el-icon-download"></i>
-        </span>-->
-        <span
-          v-if="!disabled"
-          class="el-upload-list__item-delete"
-          @click="handleRemove(file)"
-        >
-          <i class="el-icon-delete"></i>
-        </span>
-      </span>
-      </div>
-    </el-upload>
+        </div>
+      </el-upload>-->
+      <el-upload
+        class="upload-demo"
+        ref="upload"
+        action="#"
+        :before-upload="beforeUpload"
+        :on-preview="handlePreview"
+        :on-remove="handleRemove"
+        :file-list="fileList"
+        :auto-upload="false">
+        <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+        <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+      </el-upload>
+    </el-dialog>
     <el-dialog :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt="">
     </el-dialog>
@@ -85,17 +79,19 @@ export default {
   data () {
     return {
       printingData: [{
-        date: '19-11-11',
-        artistImage: 'http://localhost:3000/static/images/a.jpg',
-        freehandImage: '../../../static/images/bg.jpg',
+        time: '',
+        artistImage: '',
+        freehandImage: '',
         srcList: [
-          '../../../static/images/bg.jpg',
-          '../../../static/images/bg1.jpg'
+          '',
+          ''
         ]
       }],
       dialogImageUrl: '',
       dialogVisible: false,
-      disabled: false
+      disabled: false,
+      uploadDialogVisible: true,
+      fileList: []
     }
   },
   mounted () {
@@ -119,19 +115,20 @@ export default {
         } else if (response.data.code === -1) {
           this.$message.error(response.data.msg)
         } else {
-          // this.essayList = response.data.data
+          this.printingData = response.data.data
         }
       }).catch((error) => {
         console.log(error)
       })
     },
-    addPainting () {
+    addPainting (fd) {
       this.$axios({
         method: 'post',
-        url: '/api/addPainting',
+        url: '/api/appendPainting',
         headers: {
           'token': localStorage.getItem('token')
-        }/* ,
+        },
+        data: this.$qs.stringify(fd)/* ,
         data: this.$qs.stringify({
           word: this.addWord.word
         }) */
@@ -142,16 +139,29 @@ export default {
         } else if (response.data.code === -1) {
           this.$message.error(response.data.msg)
         } else {
-          this.essayList = response.data.data
+          // this.essayList = response.data.data
         }
       }).catch((error) => {
         console.log(error)
       })
     },
-    showDialog () {
-
+    beforeUpload (file) {
+      console.log(file)
+      let fd = new FormData()
+      fd.append('key', file, 'fileName')
+      this.addPainting(fd)
+      return false // 返回false不会自动上传
     },
-    handleRemove (file) {
+    showDialog () {
+      this.uploadDialogVisible = true
+    },
+    submitUpload () {
+      this.$refs.upload.submit()
+    },
+    handleRemove (file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePreview (file) {
       console.log(file)
     },
     handlePictureCardPreview (file) {
